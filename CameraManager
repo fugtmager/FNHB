@@ -1,0 +1,85 @@
+using System.Collections;
+using System.Collections.Generic;
+using UnityEngine;
+
+public class CameraManager : MonoBehaviour
+{
+    public Camera cameraSecurityRoom;
+    public Camera camera1A;
+    public Camera camera1B;
+    public Camera camera1C;
+    public Camera camera2A;
+    public Camera camera2B;
+    public Camera camera2C;
+    public Camera camera3A;
+    public Camera camera3B;
+    public Camera camera3C;
+
+    protected Camera[] cameras;
+
+    protected int currentCamera;
+
+    private void Awake()
+    {
+        cameras = new Camera[10];
+
+        cameras[0] = cameraSecurityRoom;
+        cameras[1] = camera1A;
+        cameras[2] = camera1B;
+        cameras[3] = camera1C;
+        cameras[4] = camera2A;
+        cameras[5] = camera2B;
+        cameras[6] = camera2C;
+        cameras[7] = camera3A;
+        cameras[8] = camera3B;
+        cameras[9] = camera3C;
+    }
+
+    void incCamera()
+    {
+        cameras[currentCamera].GetComponent<AudioListener>().enabled = false;
+        cameras[currentCamera].enabled = false;
+
+        currentCamera++;
+
+        if(currentCamera > cameras.Length)
+        {
+            currentCamera = 0;
+        }
+
+        cameras[currentCamera].enabled = true;
+        cameras[currentCamera].GetComponent<AudioListener>().enabled = true;
+    }
+
+    void decCamera()
+    {
+        cameras[currentCamera].GetComponent<AudioListener>().enabled = false;
+        cameras[currentCamera].enabled = false;
+
+        currentCamera--;
+
+        if (currentCamera < 0)
+        {
+            currentCamera = cameras.Length - 1;
+        }
+
+        cameras[currentCamera].GetComponent<AudioListener>().enabled = true;
+        cameras[currentCamera].enabled = true;
+    }
+
+    // Update is called once per frame
+    void Update()
+    {
+        if(Input.GetKeyUp(KeyCode.UpArrow))
+        {
+            incCamera();
+        }
+
+        if (Input.GetKeyUp(KeyCode.DownArrow))
+        {
+            decCamera();
+        }
+
+        //Debug.Log(currentCamera);
+    }
+}
